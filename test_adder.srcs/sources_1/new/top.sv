@@ -21,8 +21,12 @@
 
 
 module top(
+    input logic clk,
+    
     input logic [15:0] sw,
     
+    //Push Buttons
+    input logic btnC,btnU,btnL,btnR,btnD,
     output logic [15:0] led,
     
     //Seven Segment Pins
@@ -35,14 +39,16 @@ module top(
     localparam A_INDEX = N_BITs - 1;
     localparam B_INDEX = N_BITs + 7;
     
+    logic nrst = ~btnC;
+    
     logic [N_BITs-1:0] sum;
+    logic cout;
     
-    adder_n_bit #(.N(N_BITs)) add1(.a(sw[A_INDEX:0]), .b(sw[B_INDEX:8]), .cin(sw[15]), .s(sum), .cout(led[N_BITs]));
+    adder_n_bit #(.N(N_BITs)) add1(.a(sw[A_INDEX:0]), .b(sw[B_INDEX:8]), .cin(sw[15]), .s(sum), .cout(cout));
     
-    ssdec(.enc(sum), .dec(seg), .dp(dp), .en(sw[14]));
-    
-    assign an = sw[14] ? 4'h0:4'hF;
-    
+    cycle_display (.sum(sum), .seg_out(seg), .dp(dp), .en(sw[14]), .clk(clk), .nrst(nrst), .cout(cout), .an(an));
+
+    assign led[N_BITs] = cout;
     assign led[A_INDEX:0] = sum;
     assign led[15:N_BITs+1] = '0;
     
