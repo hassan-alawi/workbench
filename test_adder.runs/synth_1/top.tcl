@@ -58,7 +58,11 @@ if {$::dispatch::connected} {
 OPTRACE "synth_1" START { ROLLUP_AUTO }
 set_param chipscope.maxJobs 3
 set_param labtools.enable_cs_server 0
+set_param checkpoint.writeSynthRtdsInDcp 1
+set_param synth.incrementalSynthesisCache C:/Users/hassa/AppData/Roaming/Xilinx/Vivado/.Xil/Vivado-7648-PC/incrSyn
 set_param xicom.use_bs_reader 1
+set_msg_config -id {Synth 8-256} -limit 10000
+set_msg_config -id {Synth 8-638} -limit 10000
 OPTRACE "Creating in-memory project" START { }
 create_project -in_memory -part xc7a35tcpg236-1
 
@@ -77,6 +81,7 @@ OPTRACE "Adding files" START { }
 read_verilog -library xil_defaultlib -sv {
   C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/adder_1_bit.sv
   C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/adder_4_bit.sv
+  C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/ssdec.sv
   C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/top.sv
 }
 OPTRACE "Adding files" END { }
