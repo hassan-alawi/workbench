@@ -20,10 +20,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module cycle_display(
+module cycle_display#(parameter N=4)( //Numeber of bits for the clock divider to allow for parametrizable division
     input logic clk, nrst, en,
-    input logic cout,
-    input logic [3:0] sum,
+    input logic [3:0] disp0, disp1, disp2, disp3,
+    input logic [N-1:0] disp_clk_div,
     output logic [7:0] seg_out,
     output logic [3:0] an,
     output logic dp
@@ -32,7 +32,7 @@ module cycle_display(
     logic [3:0] enc;
     logic en_shift;
     
-    clock_div_n_bit #(.N(10))(.clk(clk), .nrst(nrst), .en(en), .div('d511), .cnt(), .at_max(en_shift)); //Necessary to slow down the display cycling so that the ss outputs are blurred together
+    clock_div_n_bit #(.N(N))(.clk(clk), .nrst(nrst), .en(en), .div(disp_clk_div), .cnt(), .at_max(en_shift)); //Necessary to slow down the display cycling so that the ss outputs are blurred together
     
     ssdec(.enc(enc), .dec(seg_out), .dp(dp), .en(en));
     
@@ -50,8 +50,10 @@ module cycle_display(
     
     always_comb begin
         case(an)
-        4'b1110: enc = sum;
-        4'b1101: enc = {3'b0,cout};
+        4'b1110: enc = disp0;
+        4'b1101: enc = disp1;
+        4'b1011: enc = disp2;
+        4'b0111: enc = disp3;
         default: enc = 4'b0;
         endcase
     end

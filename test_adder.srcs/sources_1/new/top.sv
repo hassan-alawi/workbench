@@ -46,7 +46,7 @@ module top(
     
     adder_n_bit #(.N(N_BITs)) add1(.a(sw[A_INDEX:0]), .b(sw[B_INDEX:8]), .cin(sw[15]), .s(sum), .cout(cout));
     
-    cycle_display (.sum(sum), .seg_out(seg), .dp(dp), .en(sw[14]), .clk(clk), .nrst(nrst), .cout(cout), .an(an));
+    cycle_display #(.N(10))(.clk(clk), .nrst(nrst),  .en(sw[14]), .an(an), .seg_out(seg), .dp(dp), .disp0(sum), .disp1({3'b0,cout}), .disp2('0), .disp3('0), .disp_clk_div('d1023));
 
     assign led[N_BITs] = cout;
     assign led[A_INDEX:0] = sum;
