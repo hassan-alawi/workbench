@@ -38,8 +38,7 @@ module cycle_display#(parameter N=4, NUM_DISP = 4)( //Numeber of bits for the cl
     logic [3:0] ser_in, ser_out;
     
     assign ser_in = ser_out;
-    
-//    logic [(4*NUM_DISP)-1:0] n_disp;
+
     logic [3:0] n_an;
     
     clock_div_n_bit #(.N(N)) ck1(.clk(clk), .nrst(nrst), .en(en), .div(disp_clk_div), .cnt(), .at_max(en_shift)); //Necessary to slow down the display cycling so that the ss outputs aren't blurred together
@@ -75,30 +74,6 @@ module cycle_display#(parameter N=4, NUM_DISP = 4)( //Numeber of bits for the cl
         end
     end
     
-//    always_ff @(posedge clk, negedge nrst) begin
-//            if(~nrst) begin
-//                disp <= message;
-//            end
-//            else begin
-//                disp <= n_disp;
-//            end
-//        end
-        
-//      always_comb begin
-//        n_disp = disp;
-//        if(load) begin
-//            n_disp = message;
-//        end
-//        else if (en_display_shift) begin
-//            if(dir) begin
-//                n_disp = {disp[3:0], disp[(4*NUM_DISP)-1:4]};
-//            end
-//            else begin
-//                n_disp = {disp[(4*NUM_DISP)-1-4:0],disp[(4*NUM_DISP)-1:(4*NUM_DISP)-1-3]};
-//            end
-//        end
-//    end
-
     always_comb begin
         case(an)
         4'b1110: enc = disp[3:0];
