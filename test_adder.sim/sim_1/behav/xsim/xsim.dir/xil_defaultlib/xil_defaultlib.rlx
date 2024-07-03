@@ -4,9 +4,10 @@ May 22 2024
 19:03:11
 C:/Users/hassa/test_adder/test_adder.sim/sim_1/behav/xsim/glbl.v,1708598507,verilog,,,,glbl,,uvm,,,,,,
 C:/Users/hassa/test_adder/test_adder.srcs/sim_1/new/tb_cycle_display.sv,1719966558,systemVerilog,,,,tb_cycle_display,,uvm,,,,,,
+C:/Users/hassa/test_adder/test_adder.srcs/sim_1/new/tb_n_bit_counter.sv,1719982390,systemVerilog,,,,tb_n_bit_counter,,uvm,,,,,,
 C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/adder_1_bit.sv,1719876219,systemVerilog,,C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/adder_4_bit.sv,,adder_1_bit,,uvm,,,,,,
-C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/adder_4_bit.sv,1719958151,systemVerilog,,C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/top.sv,,adder_n_bit,,uvm,,,,,,
 C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/clock_div_n_bit.sv,1719896342,systemVerilog,,C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/cycle_display.sv,,clock_div_n_bit,,uvm,,,,,,
 C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/cycle_display.sv,1719964959,systemVerilog,,C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/ssdec.sv,,cycle_display,,uvm,,,,,,
+C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/n_bit_counter.sv,1719982274,systemVerilog,,C:/Users/hassa/test_adder/test_adder.srcs/sim_1/new/tb_n_bit_counter.sv,,n_bit_counter,,uvm,,,,,,
 C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/ssdec.sv,1719893859,systemVerilog,,C:/Users/hassa/test_adder/test_adder.srcs/sim_1/new/tb_cycle_display.sv,,ssdec,,uvm,,,,,,
 C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/top.sv,1719957988,systemVerilog,,,,top,,uvm,,,,,,
