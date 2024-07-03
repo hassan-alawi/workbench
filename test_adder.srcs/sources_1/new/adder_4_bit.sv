@@ -33,10 +33,10 @@ module adder_n_bit #(parameter N=4)(
     genvar i; 
     for(i = 0; i < N; i++) begin
         if(i==0) begin
-        adder_1_bit (.a(a[i]), .b(b[i]), .cin(cin), .cout(internal_carry_in[i]), .s(s[i]));
+        adder_1_bit i(.a(a[i]), .b(b[i]), .cin(cin), .cout(internal_carry_in[i]), .s(s[i]));
         end
         else begin
-        adder_1_bit (.a(a[i]), .b(b[i]), .cin(internal_carry_in[i-1]), .cout(internal_carry_in[i]), .s(s[i]));
+        adder_1_bit i(.a(a[i]), .b(b[i]), .cin(internal_carry_in[i-1]), .cout(internal_carry_in[i]), .s(s[i]));
         end 
     end
     endgenerate

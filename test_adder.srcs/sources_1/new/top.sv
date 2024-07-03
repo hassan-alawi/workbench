@@ -35,23 +35,45 @@ module top(
     output logic dp
     );
     
-    localparam N_BITs = 4;
+    localparam SYS_CLK = 450000000; // 450MHz
+    localparam TARGET_CLK = 5; //Set your target frequency 
+    
+    localparam DISP_PRE_SCALAR = 'd1023; //Set SSD display refresh rate
+    localparam CYCLE_PRE_SCALAR = SYS_CLK / TARGET_CLK - 1; //Calculates cycle prescalar value from system and target clk
+    
+    
+    localparam N_BITs = 4; //Number of bits for adder inputs and outputs
     localparam A_INDEX = N_BITs - 1;
     localparam B_INDEX = N_BITs + 7;
     
-    logic nrst = ~btnC;
+    logic nrst;
+    assign nrst = ~btnC;
     
+    //Display Signals
+    logic [23:0] message1, message2, message;
+    
+    logic display_en;
+    logic load;
+    logic dir;
+    
+    assign display_en = sw[15];
+    assign load = sw[14];
+    assign dir = sw[13];
+    
+    assign message1 = {4'hD,4'hE,4'hF,4'hA,4'hB,4'hC};
+    assign message2 = {'0,3'b0,cout,sum};
+    assign message = sw[12] ? message1 : message2;
+    
+    //Adder Signals
     logic [N_BITs-1:0] sum;
     logic cout;
     
-    adder_n_bit #(.N(N_BITs)) add1(.a(sw[A_INDEX:0]), .b(sw[B_INDEX:8]), .cin(sw[15]), .s(sum), .cout(cout));
-    
-    cycle_display #(.N(10))(.clk(clk), .nrst(nrst),  .en(sw[14]), .an(an), .seg_out(seg), .dp(dp), .disp0(sum), .disp1({3'b0,cout}), .disp2('0), .disp3('0), .disp_clk_div('d1023));
-
     assign led[N_BITs] = cout;
     assign led[A_INDEX:0] = sum;
     assign led[15:N_BITs+1] = '0;
     
+    adder_n_bit #(.N(N_BITs)) add1(.a(sw[A_INDEX:0]), .b(sw[B_INDEX:8]), .cin(1'b0), .s(sum), .cout(cout));
     
-       
+    cycle_display #(.N(28), .NUM_DISP(6)) disp (.clk(clk), .nrst(nrst),  .en(display_en), .load(load), .dir(dir), .an(an), .seg_out(seg), .dp(dp), .message(message), .disp_clk_div(DISP_PRE_SCALAR), .cycle_clk_div(CYCLE_PRE_SCALAR));
+    
 endmodule

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_cycle_display_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_cycle_display" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="1,612.726 ns"></ZoomEndTime>
+      <Cursor1Time time="50.280 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="276"></NameColumnWidth>
+      <ValueColumnWidth column_width="112"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="18" />
+   <wvobject fp_name="/tb_cycle_display/tb_clk" type="logic">
+      <obj_property name="ElementShortName">tb_clk</obj_property>
+      <obj_property name="ObjectShortName">tb_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cycle_display/tb_nrst" type="logic">
+      <obj_property name="ElementShortName">tb_nrst</obj_property>
+      <obj_property name="ObjectShortName">tb_nrst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cycle_display/tb_en" type="logic">
+      <obj_property name="ElementShortName">tb_en</obj_property>
+      <obj_property name="ObjectShortName">tb_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cycle_display/tb_load" type="logic">
+      <obj_property name="ElementShortName">tb_load</obj_property>
+      <obj_property name="ObjectShortName">tb_load</obj_property>
+      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cycle_display/tb_message" type="array">
+      <obj_property name="ElementShortName">tb_message[15:0]</obj_property>
+      <obj_property name="ObjectShortName">tb_message[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cycle_display/tb_disp_clk_div" type="array">
+      <obj_property name="ElementShortName">tb_disp_clk_div[31:0]</obj_property>
+      <obj_property name="ObjectShortName">tb_disp_clk_div[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cycle_display/tb_seg" type="array">
+      <obj_property name="ElementShortName">tb_seg[6:0]</obj_property>
+      <obj_property name="ObjectShortName">tb_seg[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cycle_display/tb_an" type="array">
+      <obj_property name="ElementShortName">tb_an[3:0]</obj_property>
+      <obj_property name="ObjectShortName">tb_an[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cycle_display/disp/disp" type="array">
+      <obj_property name="ElementShortName">disp[15:0]</obj_property>
+      <obj_property name="ObjectShortName">disp[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cycle_display/disp/cycle_clk_div" type="array">
+      <obj_property name="ElementShortName">cycle_clk_div[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cycle_clk_div[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cycle_display/disp/en_shift" type="logic">
+      <obj_property name="ElementShortName">en_shift</obj_property>
+      <obj_property name="ObjectShortName">en_shift</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cycle_display/disp/en_display_shift" type="logic">
+      <obj_property name="ElementShortName">en_display_shift</obj_property>
+      <obj_property name="ObjectShortName">en_display_shift</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cycle_display/disp/enc" type="array">
+      <obj_property name="ElementShortName">enc[3:0]</obj_property>
+      <obj_property name="ObjectShortName">enc[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cycle_display/tb_dp" type="logic">
+      <obj_property name="ElementShortName">tb_dp</obj_property>
+      <obj_property name="ObjectShortName">tb_dp</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cycle_display/CLK_PERIOD" type="array">
+      <obj_property name="ElementShortName">CLK_PERIOD[31:0]</obj_property>
+      <obj_property name="ObjectShortName">CLK_PERIOD[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cycle_display/DISP_PRE_SCALAR" type="array">
+      <obj_property name="ElementShortName">DISP_PRE_SCALAR[31:0]</obj_property>
+      <obj_property name="ObjectShortName">DISP_PRE_SCALAR[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cycle_display/NUM_DISP" type="array">
+      <obj_property name="ElementShortName">NUM_DISP[31:0]</obj_property>
+      <obj_property name="ObjectShortName">NUM_DISP[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cycle_display/N" type="array">
+      <obj_property name="ElementShortName">N[31:0]</obj_property>
+      <obj_property name="ObjectShortName">N[31:0]</obj_property>
+   </wvobject>
+</wave_config>

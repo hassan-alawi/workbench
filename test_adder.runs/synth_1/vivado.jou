@@ -3,8 +3,8 @@
 # SW Build 5076996 on Wed May 22 18:37:14 MDT 2024
 # IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
 # SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
-# Start of session at: Tue Jul  2 08:28:16 2024
-# Process ID: 10620
+# Start of session at: Tue Jul  2 21:57:10 2024
+# Process ID: 33352
 # Current directory: C:/Users/hassa/test_adder/test_adder.runs/synth_1
 # Command line: vivado.exe -log top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source top.tcl
 # Log file: C:/Users/hassa/test_adder/test_adder.runs/synth_1/top.vds
@@ -19,6 +19,6 @@
 # Host memory       :34241 MB
 # Swap memory       :5100 MB
 # Total Virtual     :39341 MB
-# Available Virtual :14607 MB
+# Available Virtual :11539 MB
 #-----------------------------------------------------------
 source top.tcl -notrace
