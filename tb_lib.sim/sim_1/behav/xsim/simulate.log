@@ -1,0 +1,3 @@
+Time resolution is 1 ps
+Testcase passed:           6 / 6
+$finish called at time : 1535 ns : File "C:/Users/hassa/test_adder/test_adder.srcs/sim_1/new/tb_n_bit_counter.sv" Line 125
