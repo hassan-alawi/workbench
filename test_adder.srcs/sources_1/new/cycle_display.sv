@@ -21,7 +21,7 @@
 
 
 module cycle_display#(parameter N=4, NUM_DISP = 4)( //Numeber of bits for the clock divider to allow for parametrizable division
-    input logic clk, nrst, en, load, dir,
+    input logic clk, nrst, en, load, dir, clr,
     input logic [(4*NUM_DISP)-1:0] message, //Default 16 bits
     input logic [N-1:0] disp_clk_div,
     input logic [N-1:0] cycle_clk_div,
@@ -35,8 +35,27 @@ module cycle_display#(parameter N=4, NUM_DISP = 4)( //Numeber of bits for the cl
     logic [3:0] enc;
     logic en_shift;
     
+    logic [3:0] ser_in, ser_out;
+    
+    assign ser_in = ser_out;
+    
+//    logic [(4*NUM_DISP)-1:0] n_disp;
+    logic [3:0] n_an;
+    
     clock_div_n_bit #(.N(N)) ck1(.clk(clk), .nrst(nrst), .en(en), .div(disp_clk_div), .cnt(), .at_max(en_shift)); //Necessary to slow down the display cycling so that the ss outputs aren't blurred together
     clock_div_n_bit #(.N(N)) ck2(.clk(clk), .nrst(nrst), .en(en), .div(cycle_clk_div), .cnt(), .at_max(en_display_shift)); //Allows for configurable cycle speed
+    
+    n_bit_char_sr #(.N(4*NUM_DISP)) sr(
+    .clk(clk), 
+    .nrst(nrst), 
+    .en(en_display_shift), 
+    .load(load), 
+    .dir(dir), 
+    .clr(clr), 
+    .ser_in(ser_in), 
+    .ser_out(ser_out),
+    .par_in(message),
+    .par_out(disp)); 
     
     ssdec dec1(.enc(enc), .dec(seg_out), .dp(dp), .en(en));
     
@@ -44,33 +63,41 @@ module cycle_display#(parameter N=4, NUM_DISP = 4)( //Numeber of bits for the cl
         if(~nrst) begin
             an <= 4'b1110;
         end
-        else if (en_shift) begin
-            an <= {an[2:0],an[3]};
-        end
         else begin
-            an <= an;
+            an <= n_an;
         end
     end
     
-    always_ff @(posedge clk, negedge nrst) begin
-            if(~nrst) begin
-                disp <= message;
-            end
-            else if(load) begin
-                disp <= message;
-            end
-            else if (en_display_shift) begin
-                if(dir) begin
-                disp <= {disp[3:0], disp[(4*NUM_DISP)-1:4]};
-                end
-                else begin
-                disp <= {disp[(4*NUM_DISP)-1-4:0],disp[(4*NUM_DISP)-1:(4*NUM_DISP)-1-3]};
-                end
-            end
-            else begin
-                disp <= disp;
-            end
+    always_comb begin
+        n_an = an;
+        if(en_shift) begin
+            n_an = {an[2:0],an[3]};
         end
+    end
+    
+//    always_ff @(posedge clk, negedge nrst) begin
+//            if(~nrst) begin
+//                disp <= message;
+//            end
+//            else begin
+//                disp <= n_disp;
+//            end
+//        end
+        
+//      always_comb begin
+//        n_disp = disp;
+//        if(load) begin
+//            n_disp = message;
+//        end
+//        else if (en_display_shift) begin
+//            if(dir) begin
+//                n_disp = {disp[3:0], disp[(4*NUM_DISP)-1:4]};
+//            end
+//            else begin
+//                n_disp = {disp[(4*NUM_DISP)-1-4:0],disp[(4*NUM_DISP)-1:(4*NUM_DISP)-1-3]};
+//            end
+//        end
+//    end
 
     always_comb begin
         case(an)

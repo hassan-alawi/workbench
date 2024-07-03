@@ -55,10 +55,12 @@ module top(
     logic display_en;
     logic load;
     logic dir;
+    logic clr;
     
     assign display_en = sw[15];
     assign load = sw[14];
     assign dir = sw[13];
+    assign clr = 1'b0;
     
     assign message1 = {4'hD,4'hE,4'hF,4'hA,4'hB,4'hC};
     assign message2 = {'0,3'b0,cout,sum};
@@ -74,6 +76,6 @@ module top(
     
     adder_n_bit #(.N(N_BITs)) add1(.a(sw[A_INDEX:0]), .b(sw[B_INDEX:8]), .cin(1'b0), .s(sum), .cout(cout));
     
-    cycle_display #(.N(28), .NUM_DISP(6)) disp (.clk(clk), .nrst(nrst),  .en(display_en), .load(load), .dir(dir), .an(an), .seg_out(seg), .dp(dp), .message(message), .disp_clk_div(DISP_PRE_SCALAR), .cycle_clk_div(CYCLE_PRE_SCALAR));
+    cycle_display #(.N(28), .NUM_DISP(6)) disp (.clk(clk), .nrst(nrst),  .clr(clr), .en(display_en), .load(load), .dir(dir), .an(an), .seg_out(seg), .dp(dp), .message(message), .disp_clk_div(DISP_PRE_SCALAR), .cycle_clk_div(CYCLE_PRE_SCALAR));
     
 endmodule

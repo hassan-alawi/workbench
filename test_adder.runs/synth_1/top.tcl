@@ -85,6 +85,7 @@ read_verilog -library xil_defaultlib -sv {
   C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/adder_4_bit.sv
   C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/clock_div_n_bit.sv
   C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/cycle_display.sv
+  C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/n_bit_char_sr.sv
   C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/ssdec.sv
   C:/Users/hassa/test_adder/test_adder.srcs/sources_1/new/top.sv
 }
