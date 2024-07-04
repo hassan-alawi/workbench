@@ -1,7 +1,7 @@
 # compile verilog/system verilog design source files
-sv xil_defaultlib  \
-"../../../../test_adder.srcs/sources_1/new/n_bit_counter.sv" \
-"../../../../test_adder.srcs/sim_1/new/tb_n_bit_counter.sv" \
+sv xil_defaultlib  --include "../../../../tb_lib.ip_user_files/ipstatic" \
+"../../../../tb_lib.srcs/sources_1/new/n_bit_counter.sv" \
+"../../../../tb_lib.srcs/sim_1/new/tb_n_bit_counter.sv" \
 
 # compile glbl module
 verilog xil_defaultlib "glbl.v"

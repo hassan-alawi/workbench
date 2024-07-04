@@ -21,35 +21,11 @@
 
 
 module clock_div_n_bit#(parameter N=4)(
-    input logic clk, nrst, en,
+    input logic clk, nrst, en, clr,
     input logic [N-1:0] div,
     output logic [N-1:0] cnt,
     output logic at_max
     );
     
-    logic [N-1:0] next_cnt;
-    
-    always_ff @(posedge clk, negedge nrst) begin
-        if(~nrst) begin
-            cnt <= '0;
-        end
-        
-        else begin
-            cnt <= next_cnt;
-        end
-    end
-    
-    always_comb begin
-    next_cnt = cnt;
-    at_max = 1'b0;
-    
-    if(en) begin
-        next_cnt = cnt + 'd1;
-        
-        if(cnt == div) begin
-            at_max = 1'b1;
-            next_cnt = '0;
-         end
-     end
-    end
+    n_bit_counter #(.N(N)) clk_div_counter(.clk(clk), .nrst(nrst), .en(en), .max(div), .cnt(cnt), .rollover_flag(at_max), .load(1'b0), .clr(clr), .par_in(par_in), .mode(2'd0));
 endmodule

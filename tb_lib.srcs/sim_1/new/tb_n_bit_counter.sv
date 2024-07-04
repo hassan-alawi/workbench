@@ -31,9 +31,10 @@ localparam N = 32;
 //INPUTS
 logic tb_clk, tb_nrst, tb_en, tb_load, tb_clr;
 logic [N-1:0] tb_max, tb_par_in;
+logic [1:0] tb_mode;
 
 //OUTPUTS
-logic tb_at_max;
+logic tb_rollover_flag;
 logic [N-1:0] tb_cnt;
 
 n_bit_counter #(.N(N)) counter (
@@ -43,8 +44,9 @@ n_bit_counter #(.N(N)) counter (
 .load(tb_load), 
 .clr(tb_clr),
 .max(tb_max),
+.mode(tb_mode),
 .par_in(tb_par_in),
-.at_max(tb_at_max),
+.rollover_flag(tb_rollover_flag),
 .cnt(tb_cnt));
 
 task reset();
@@ -82,8 +84,15 @@ tb_par_in = data;
 tb_load = 1'b0;
 endtask
 
+task set_mode(
+input logic [1:0] mode
+);
+@(negedge tb_clk);
+tb_mode = mode;
+endtask
+
 task init_tb();
-{tb_par_in, tb_max, tb_en, tb_clr, tb_load, tb_nrst} = 'd1; //Sets everything except nrst to inactive low
+{tb_par_in, tb_max, tb_mode, tb_en, tb_clr, tb_load, tb_nrst} = 'd1; //Sets everything except nrst to inactive low
 endtask
 
 
@@ -95,33 +104,65 @@ tb_clk = 1;
 end
 
 initial begin
-integer testcases_passed = 6;
+integer testcases_passed = 20;
 init_tb();
+set_max('d7);
 reset();
 
-repeat(2) @(posedge tb_clk);
-set_max('d128);
+repeat(2) @(posedge tb_clk);;
 toggle_en();
 
-wait(tb_cnt == 'd128);
+if(tb_cnt != 'd0) begin $error("Incorrect Count at start of count up sequence"); testcases_passed--;end;
+if(tb_rollover_flag != 'd0) begin $error("Incorrect rollover_flag at start of count up sequence");  testcases_passed--;end;
 
-if(tb_cnt != 'd128) begin $error("Incorrect Count after count up sequence"); testcases_passed--;end;
-if(tb_at_max != 'd1) begin $error("Incorrect at_max after count up sequence");  testcases_passed--;end;
+wait(tb_cnt == 'd7);
 
-repeat(10) @(posedge tb_clk);
+if(tb_cnt != 'd7) begin $error("Incorrect Count during count up sequence"); testcases_passed--;end;
+if(tb_rollover_flag != 'd1) begin $error("Incorrect rollover_flag during count up sequence");  testcases_passed--;end;
+
+repeat(5) @(posedge tb_clk);
 clear();
 
 wait(tb_cnt == 'd0);
 if(tb_cnt != 'd0) begin $error("Incorrect Count after clear sequence");  testcases_passed--;end;
-if(tb_at_max != 'd0) begin $error("Incorrect at_max after clear sequence");  testcases_passed--;end;
+if(tb_rollover_flag != 'd0) begin $error("Incorrect rollover_flag after clear sequence");  testcases_passed--;end;
 
-load_counter('d120);
+load_counter('d3);
 
-wait(tb_cnt == 'd128);
-if(tb_cnt != 'd128) begin $error("Incorrect count after load and count up sequence");  testcases_passed--;end;
-if(tb_at_max != 'd1) begin $error("Incorrect at max after load and count up sequence");  testcases_passed--;end;
+wait(tb_cnt == 'd7);
+if(tb_cnt != 'd7) begin $error("Incorrect count after load and count up sequence");  testcases_passed--;end;
+if(tb_rollover_flag != 'd1) begin $error("Incorrect rollover_flag after load and count up sequence");  testcases_passed--;end;
 
-$display("Testcase passed: %d / 6", testcases_passed);
+set_mode(2'd1);
+clear();
+
+if(tb_cnt != 'd7) begin $error("Incorrect count after clear and count down sequence");  testcases_passed--;end;
+if(tb_rollover_flag != 'd0) begin $error("Incorrect rollover_flag after load and count down sequence");  testcases_passed--;end;
+
+wait(tb_cnt == 'd0);
+
+if(tb_cnt != 'd0) begin $error("Incorrect Count during count down sequence");  testcases_passed--;end;
+if(tb_rollover_flag != 'd1) begin $error("Incorrect rollover_flag during count down sequence");  testcases_passed--;end;
+
+set_mode(2'd2);
+clear();
+
+if(tb_cnt != 'd0) begin $error("Incorrect count after clear and count up-down sequence");  testcases_passed--;end;
+if(tb_rollover_flag != 'd0) begin $error("Incorrect rollover_flag after clear and count up-down sequence");  testcases_passed--;end;
+
+wait(tb_cnt == 'd7);
+if(tb_cnt != 'd7) begin $error("Incorrect count during count up-down sequence");  testcases_passed--;end;
+if(tb_rollover_flag != 'd0) begin $error("Incorrect rollover_flag during count up-down sequence");  testcases_passed--;end;
+
+wait(tb_cnt == 'd0);
+if(tb_cnt != 'd0) begin $error("Incorrect Count after count up-down sequence");  testcases_passed--;end;
+if(tb_rollover_flag != 'd1) begin $error("Incorrect rollover_flag after count up-down sequence");  testcases_passed--;end;
+
+repeat (2) @(negedge tb_clk);
+if(tb_cnt != 'd1) begin $error("Incorrect Count after rollover of count up-down sequence");  testcases_passed--;end;
+if(tb_rollover_flag != 'd0) begin $error("Incorrect rollover_flag after rollover of count up-down sequence");  testcases_passed--;end;
+
+$display("Testcase passed: %d / 20", testcases_passed);
 $finish;
 end
 endmodule

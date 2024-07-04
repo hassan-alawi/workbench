@@ -41,8 +41,8 @@ module cycle_display#(parameter N=4, NUM_DISP = 4)( //Numeber of bits for the cl
 
     logic [3:0] n_an;
     
-    clock_div_n_bit #(.N(N)) ck1(.clk(clk), .nrst(nrst), .en(en), .div(disp_clk_div), .cnt(), .at_max(en_shift)); //Necessary to slow down the display cycling so that the ss outputs aren't blurred together
-    clock_div_n_bit #(.N(N)) ck2(.clk(clk), .nrst(nrst), .en(en), .div(cycle_clk_div), .cnt(), .at_max(en_display_shift)); //Allows for configurable cycle speed
+    clock_div_n_bit #(.N(N)) ck1(.clk(clk), .nrst(nrst), .en(en), .div(disp_clk_div), .cnt(), .at_max(en_shift), .clr()); //Necessary to slow down the display cycling so that the ss outputs aren't blurred together
+    clock_div_n_bit #(.N(N)) ck2(.clk(clk), .nrst(nrst), .en(en), .div(cycle_clk_div), .cnt(), .at_max(en_display_shift), .clr()); //Allows for configurable cycle speed
     
     n_bit_char_sr #(.N(4*NUM_DISP)) sr(
     .clk(clk), 

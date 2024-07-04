@@ -21,7 +21,7 @@
 
 
 module top(
-    input logic clk,
+    input logic sysclk,
     
     input logic [15:0] sw,
     
@@ -35,47 +35,75 @@ module top(
     output logic dp
     );
     
-    localparam SYS_CLK = 450000000; // 450MHz
-    localparam TARGET_CLK = 5; //Set your target frequency 
+    logic clk, nrst;
     
-    localparam DISP_PRE_SCALAR = 'd1023; //Set SSD display refresh rate
-    localparam CYCLE_PRE_SCALAR = SYS_CLK / TARGET_CLK - 1; //Calculates cycle prescalar value from system and target clk
+    logic locked;
+    
+    clk_wiz_0 clkgen(.clk_in1(sysclk), .resetn(nrst), .clk_out1(clk), .locked(locked));
+    
+    localparam SYS_CLK = 450000000; // 450MHz
+    localparam TARGET_CYCLE_CLK = 2; //Set your target cycling frequency
+    localparam TARGET_DISP_CLK = 240; //Set your target seven segment display refresh rate 
+    
+    localparam DISP_PRE_SCALAR = SYS_CLK / TARGET_DISP_CLK - 1; //Calculates display prescalar value from system and target clk
+    localparam CYCLE_PRE_SCALAR = SYS_CLK / TARGET_CYCLE_CLK - 1; //Calculates cycle prescalar value from system and target clk
     
     
     localparam N_BITs = 4; //Number of bits for adder inputs and outputs
     localparam A_INDEX = N_BITs - 1;
     localparam B_INDEX = N_BITs + 7;
     
-    logic nrst;
     assign nrst = ~btnC;
     
     //Display Signals
     logic [23:0] message1, message2, message;
-    
     logic display_en;
-    logic load;
-    logic dir;
-    logic clr;
+    logic load, load_sync;
+    logic dir, dir_sync;
+    logic clr, clr_sync;
     
     assign display_en = sw[15];
     assign load = sw[14];
     assign dir = sw[13];
     assign clr = 1'b0;
     
-    assign message1 = {4'hD,4'hE,4'hF,4'hA,4'hB,4'hC};
-    assign message2 = {'0,3'b0,cout,sum};
-    assign message = sw[12] ? message1 : message2;
-    
     //Adder Signals
     logic [N_BITs-1:0] sum;
     logic cout;
     
+    assign message1 = {4'hD,4'hE,4'hF,4'hA,4'hB,4'hC};
+    assign message2 = {'0,3'b0,cout,sum};
+    assign message = sw[12] ? message1 : message2;
+    
+    //Edge Detector Signals
+    logic [1:0] edge_detector;
+    logic [1:0] latch;
+    
+    always_ff @(posedge clk, negedge nrst) begin
+        if(~nrst) begin
+            latch <= '0;
+        end
+        
+        else if(~(latch^edge_detector == '0)) begin
+            latch <= edge_detector;
+        end
+        
+        else begin
+            latch <= latch;
+        end
+    end
+    
     assign led[N_BITs] = cout;
     assign led[A_INDEX:0] = sum;
-    assign led[15:N_BITs+1] = '0;
+    assign led[15:14] = latch;
+    assign led[13:N_BITs+1] = '0;
+    
+    sync #(.N(3)) snc1(.clk(clk), .nrst(nrst), .in({load, dir, clr}), .sync_out({load_sync, dir_sync, clr_sync})); //Synchronizing asynchronous switch inputs to avoid metastability
+    
+    edge_det #(.N(2)) det(.clk(clk), .nrst(nrst), .in({load_sync, load_sync}), .mode(sum[1:0]), .edge_det(edge_detector));
     
     adder_n_bit #(.N(N_BITs)) add1(.a(sw[A_INDEX:0]), .b(sw[B_INDEX:8]), .cin(1'b0), .s(sum), .cout(cout));
     
-    cycle_display #(.N(28), .NUM_DISP(6)) disp (.clk(clk), .nrst(nrst),  .clr(clr), .en(display_en), .load(load), .dir(dir), .an(an), .seg_out(seg), .dp(dp), .message(message), .disp_clk_div(DISP_PRE_SCALAR), .cycle_clk_div(CYCLE_PRE_SCALAR));
+    cycle_display #(.N(28), .NUM_DISP(6)) disp (.clk(clk), .nrst(nrst),  .clr(clr_sync), .en(display_en), .load(load_sync), .dir(dir_sync), .an(an), .seg_out(seg), .dp(dp), .message(message), .disp_clk_div(DISP_PRE_SCALAR), .cycle_clk_div(CYCLE_PRE_SCALAR));
     
 endmodule

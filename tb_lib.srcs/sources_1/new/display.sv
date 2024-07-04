@@ -33,7 +33,7 @@ module display #(parameter N=4)( //Numeber of bits for the clock divider to allo
     logic [3:0] enc;
     logic en_shift;
     
-    clock_div_n_bit #(.N(N)) ck1(.clk(clk), .nrst(nrst), .en(en), .div(disp_clk_div), .cnt(), .at_max(en_shift)); //Necessary to slow down the display cycling so that the ss outputs aren't blurred together
+    clock_div_n_bit #(.N(N)) ck1(.clk(clk), .nrst(nrst), .en(en), .div(disp_clk_div), .cnt(), .at_max(en_shift), .clr()); //Necessary to slow down the display cycling so that the ss outputs aren't blurred together
     
     ssdec dec1(.enc(enc), .dec(seg_out), .dp(dp), .en(en));
     
