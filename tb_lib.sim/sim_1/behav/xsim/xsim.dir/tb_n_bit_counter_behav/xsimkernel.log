@@ -2,3 +2,6 @@ Running: xsim.dir/tb_n_bit_counter_behav/xsimk.exe -simmode gui -wdb tb_n_bit_co
 Design successfully loaded
 Design Loading Memory Usage: 7508 KB (Peak: 7508 KB)
 Design Loading CPU Usage: 0 ms
+Simulation completed
+Simulation Memory Usage: 8128 KB (Peak: 8128 KB)
+Simulation CPU Usage: 0 ms

@@ -37,11 +37,12 @@ module top(
     
     logic clk, nrst;
     
-    logic locked;
+//Uncomment to set up PLL 450MHz clk signal and comment the clk assign    
+//    logic locked;
     
-    clk_wiz_0 clkgen(.clk_in1(sysclk), .resetn(nrst), .clk_out1(clk), .locked(locked));
+//    clk_wiz_0 clkgen(.clk_in1(sysclk), .resetn(nrst), .clk_out1(clk), .locked(locked));
     
-    localparam SYS_CLK = 450000000; // 450MHz
+    localparam SYS_CLK = 100000000; // 100MHz
     localparam TARGET_CYCLE_CLK = 2; //Set your target cycling frequency
     localparam TARGET_DISP_CLK = 240; //Set your target seven segment display refresh rate 
     
@@ -53,6 +54,7 @@ module top(
     localparam A_INDEX = N_BITs - 1;
     localparam B_INDEX = N_BITs + 7;
     
+    assign clk = sysclk;
     assign nrst = ~btnC;
     
     //Display Signals
@@ -77,14 +79,15 @@ module top(
     
     //Edge Detector Signals
     logic [1:0] edge_detector;
+    logic [1:0] switch_detector;
     logic [1:0] latch;
     
-    always_ff @(posedge clk, negedge nrst) begin
+    always_ff @(posedge clk, negedge nrst) begin //Latch displays updated edge_detect value on each switch state update
         if(~nrst) begin
             latch <= '0;
         end
         
-        else if(~(latch^edge_detector == '0)) begin
+        else if(|switch_detector) begin //If any switch has a change of state, latch is updated
             latch <= edge_detector;
         end
         
@@ -98,9 +101,10 @@ module top(
     assign led[15:14] = latch;
     assign led[13:N_BITs+1] = '0;
     
-    sync #(.N(3)) snc1(.clk(clk), .nrst(nrst), .in({load, dir, clr}), .sync_out({load_sync, dir_sync, clr_sync})); //Synchronizing asynchronous switch inputs to avoid metastability
+    sync #(.N(3)) snc1(.clk(clk), .nrst(nrst), .in({load, dir, clr}), .sync_out({load_sync, dir_sync, clr_sync})); // Synchronizing asynchronous switch inputs to avoid metastability
     
-    edge_det #(.N(2)) det(.clk(clk), .nrst(nrst), .in({load_sync, load_sync}), .mode(sum[1:0]), .edge_det(edge_detector));
+    edge_det #(.N(2)) det(.clk(clk), .nrst(nrst), .in({load_sync, dir_sync}), .mode(sum[1:0]), .edge_det(edge_detector)); // Detects Edge of load and sync signal based on first 2 bits of sum 
+    edge_det #(.N(2)) det1(.clk(clk), .nrst(nrst), .in({load_sync,dir_sync}), .mode('d2), .edge_det(switch_detector)); // Used to only updated latch on change of switch states
     
     adder_n_bit #(.N(N_BITs)) add1(.a(sw[A_INDEX:0]), .b(sw[B_INDEX:8]), .cin(1'b0), .s(sum), .cout(cout));
     

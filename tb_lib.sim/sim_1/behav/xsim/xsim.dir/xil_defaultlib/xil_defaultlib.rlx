@@ -4,4 +4,6 @@ May 22 2024
 19:03:11
 C:/Users/hassa/tb_lib/tb_lib.sim/sim_1/behav/xsim/glbl.v,1708598507,verilog,,,,glbl,,uvm,,,,,,
 C:/Users/hassa/tb_lib/tb_lib.srcs/sim_1/new/tb_n_bit_counter.sv,1720051906,systemVerilog,,,,tb_n_bit_counter,,uvm,../../../../tb_lib.ip_user_files/ipstatic,,,,,
+C:/Users/hassa/tb_lib/tb_lib.srcs/sim_1/new/tb_n_bit_edge_detector.sv,1720187698,systemVerilog,,,,tb_n_bit_edge_detector,,uvm,../../../../tb_lib.ip_user_files/ipstatic,,,,,
+C:/Users/hassa/tb_lib/tb_lib.srcs/sources_1/new/edge_det.sv,1720053959,systemVerilog,,C:/Users/hassa/tb_lib/tb_lib.srcs/sim_1/new/tb_n_bit_edge_detector.sv,,edge_det,,uvm,../../../../tb_lib.ip_user_files/ipstatic,,,,,
 C:/Users/hassa/tb_lib/tb_lib.srcs/sources_1/new/n_bit_counter.sv,1720051313,systemVerilog,,C:/Users/hassa/tb_lib/tb_lib.srcs/sim_1/new/tb_n_bit_counter.sv,,n_bit_counter,,uvm,../../../../tb_lib.ip_user_files/ipstatic,,,,,
