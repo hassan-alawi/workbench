@@ -1,0 +1,3 @@
+Time resolution is 1 ps
+Testcase passed:           6 /           6
+$finish called at time : 240 ns : File "C:/Users/hassa/tb_lib/tb_lib.srcs/sim_1/new/tb_n_bit_edge_detector.sv" Line 122

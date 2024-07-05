@@ -40,7 +40,7 @@ module n_bit_sr #(N=8)(
     end
     
     assign par_out = sr;
-    assign ser_out = dir ? ser[0]: ser[N-1];
+    assign ser_out = dir ? sr[0]: sr[N-1];
     always_comb begin 
         n_sr = sr;
         if(clr) begin
